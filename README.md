@@ -41,18 +41,8 @@ Run the `vite build` command to make sure the sourcemaps are generated. You shou
 
 ## Configuration
 
-```ts
-type PluginConfig = {
-    key?: string;
-    base?: string;
-    runInDevelopment: boolean;
-    versionId: string;
-    removeSourcemaps: boolean;
-};
-```
-
 - `key: string` **(required)**: the Flare API key 
 - `base: string`: the base path of built output (defaults to Vite's base path)
 - `runInDevelopment: boolean`: whether to upload sourcemaps when `NODE_ENV=development` or when running the dev server (defaults to `false`)
-- `versionId: string`: the sourcemap version (defaults to a fresh `uuid` per build)
+- `version: string`: the sourcemap version (defaults to a fresh `uuid` per build)
 - `removeSourcemaps: boolean`: whether to remove the sourcemaps after uploading them (defaults to `false`). Comes in handy when you want to upload sourcemaps to Flare but don't want them published in your build.

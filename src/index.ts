@@ -1,25 +1,10 @@
 import {resolve} from 'path';
 import {existsSync, readFileSync, unlinkSync} from 'fs';
 import glob from 'fast-glob';
-import {deflateRawSync} from 'zlib';
-import axios from 'axios';
 import {Plugin, ResolvedConfig, UserConfig} from "vite";
 import {OutputOptions} from "rollup";
-
-type PluginConfig = {
-    key: string;
-    base?: string;
-    apiEndpoint: string;
-    runInDevelopment: boolean;
-    versionId: string;
-    removeSourcemaps: boolean;
-};
-
-type Sourcemap = {
-    original_file: string;
-    content: string;
-    sourcemap_url: string,
-};
+import {uuid} from "./util";
+import FlareApi from "./flareApi";
 
 export default function FlareSourcemapUploader({
     key,
@@ -33,27 +18,11 @@ export default function FlareSourcemapUploader({
         flareLog('No Flare API key was provided, not uploading sourcemaps to Flare.');
     }
 
+    const flare = new FlareApi(apiEndpoint, key, versionId);
+
     const enableUploadingSourcemaps = key &&
         (process.env.NODE_ENV !== 'development' || runInDevelopment) &&
         process.env.SKIP_SOURCEMAPS !== 'true';
-
-    function uploadSourcemap(sourcemap: Sourcemap) {
-        return new Promise((resolve, reject) => {
-            const base64GzipSourcemap = deflateRawSync(sourcemap.content).toString('base64');
-
-            axios
-                .post(apiEndpoint, {
-                    key,
-                    version_id: versionId,
-                    relative_filename: sourcemap.original_file,
-                    sourcemap: base64GzipSourcemap,
-                })
-                .then(resolve)
-                .catch((error) => {
-                    return reject(`${error.response.status}: ${error.response.data}`);
-                });
-        });
-    }
 
     return {
         name: 'flare-vite-plugin',
@@ -118,12 +87,12 @@ export default function FlareSourcemapUploader({
 
             flareLog(`Uploading ${sourcemaps.length} sourcemap files to Flare.`);
 
-            const funcs = sourcemaps.map((sourcemap) => () => uploadSourcemap(sourcemap));
+            const pendingUploads = sourcemaps.map((sourcemap) => () => flare.uploadSourcemap(sourcemap));
 
             try {
-                while (funcs.length) {
+                while (pendingUploads.length) {
                     // Maximum 10 at once https://stackoverflow.com/a/58686835
-                    await Promise.all(funcs.splice(0, 10).map((f) => f()));
+                    await Promise.all(pendingUploads.splice(0, 10).map((f) => f()));
                 }
 
                 flareLog('Successfully uploaded sourcemaps to Flare.');
@@ -155,13 +124,4 @@ function flareLog(message: string, isError = false) {
     }
 
     console.log(formattedMessage);
-}
-
-function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = (Math.random() * 16) | 0;
-        const v = c == 'x' ? r : (r & 0x3) | 0x8;
-
-        return v.toString(16);
-    });
 }

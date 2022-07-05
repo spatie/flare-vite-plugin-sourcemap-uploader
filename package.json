@@ -2,6 +2,7 @@
     "name": "@flareapp/vite-plugin-sourcemap-uploader",
     "version": "0.0.1",
     "main": "dist",
+    "types": "src/index.d.ts",
     "license": "MIT",
     "keywords": [
         "vite",

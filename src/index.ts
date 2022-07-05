@@ -6,6 +6,21 @@ import {OutputOptions} from "rollup";
 import {uuid} from "./util";
 import FlareApi from "./flareApi";
 
+export type PluginConfig = {
+    key: string;
+    base?: string;
+    apiEndpoint: string;
+    runInDevelopment: boolean;
+    version: string;
+    removeSourcemaps: boolean;
+};
+
+export type Sourcemap = {
+    original_file: string;
+    content: string;
+    sourcemap_url: string,
+};
+
 export default function FlareSourcemapUploader({
     key,
     base,

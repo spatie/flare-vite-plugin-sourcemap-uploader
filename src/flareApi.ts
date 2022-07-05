@@ -1,5 +1,6 @@
 import {deflateRawSync} from "zlib";
 import axios from "axios";
+import {Sourcemap} from "./index";
 
 export default class FlareApi {
     endpoint: string;

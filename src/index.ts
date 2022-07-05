@@ -7,7 +7,7 @@ import {Plugin, ResolvedConfig, UserConfig} from "vite";
 import {OutputOptions} from "rollup";
 
 type PluginConfig = {
-    key?: string;
+    key: string;
     base?: string;
     apiEndpoint: string;
     runInDevelopment: boolean;
@@ -147,7 +147,7 @@ export default function FlareSourcemapUploader({
 }
 
 function flareLog(message: string, isError = false) {
-    const formattedMessage = '@flareapp/flare-vite-plugin-sourcemaps: ' + message;
+    const formattedMessage = '@flareapp/vite-plugin-sourcemap-uploader: ' + message;
 
     if (isError) {
         console.error(formattedMessage);

@@ -1,5 +1,5 @@
 {
-    "name": "@flareapp/vite-plugin-sourcemaps",
+    "name": "@flareapp/vite-plugin-sourcemap-uploader",
     "version": "0.0.1",
     "main": "dist",
     "license": "MIT",

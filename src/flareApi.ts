@@ -4,12 +4,12 @@ import axios from "axios";
 export default class FlareApi {
     endpoint: string;
     key: string;
-    versionId: string;
+    version: string;
 
-    constructor(endpoint: string, key: string, versionId: string) {
+    constructor(endpoint: string, key: string, version: string) {
         this.endpoint = endpoint;
         this.key = key;
-        this.versionId = versionId;
+        this.version = version;
     }
 
     uploadSourcemap(sourcemap: Sourcemap) {
@@ -19,7 +19,7 @@ export default class FlareApi {
             axios
                 .post(this.endpoint, {
                     key: this.key,
-                    version_id: this.versionId,
+                    version_id: this.version,
                     relative_filename: sourcemap.original_file,
                     sourcemap: base64GzipSourcemap,
                 })

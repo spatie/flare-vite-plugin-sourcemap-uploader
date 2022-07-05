@@ -11,14 +11,14 @@ export default function FlareSourcemapUploader({
     base,
     apiEndpoint = 'https://flareapp.io/api/sourcemaps',
     runInDevelopment = false,
-    versionId = uuid(),
+    version = uuid(),
     removeSourcemaps = false,
 }: PluginConfig): Plugin {
     if (!key) {
         flareLog('No Flare API key was provided, not uploading sourcemaps to Flare.');
     }
 
-    const flare = new FlareApi(apiEndpoint, key, versionId);
+    const flare = new FlareApi(apiEndpoint, key, version);
 
     const enableUploadingSourcemaps = key &&
         (process.env.NODE_ENV !== 'development' || runInDevelopment) &&

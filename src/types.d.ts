@@ -3,7 +3,7 @@ type PluginConfig = {
     base?: string;
     apiEndpoint: string;
     runInDevelopment: boolean;
-    versionId: string;
+    version: string;
     removeSourcemaps: boolean;
 };
 

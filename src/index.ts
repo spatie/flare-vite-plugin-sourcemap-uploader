@@ -34,7 +34,7 @@ export default function FlareSourcemapUploader({
             return {
                 // Set FLARE_SOURCEMAP_VERSION and API key so the Flare JS client can read it
                 define: {
-                    FLARE_SOURCEMAP_VERSION: `'${versionId}'`,
+                    FLARE_SOURCEMAP_VERSION: `'${version}'`,
                     FLARE_JS_KEY: `'${key}'`,
                 },
                 build: {

@@ -1,7 +1,7 @@
 {
     "name": "@flareapp/vite-plugin-sourcemap-uploader",
-    "version": "0.0.1",
-    "main": "dist",
+    "version": "0.0.2",
+    "main": "dist/index.js",
     "types": "src/index.d.ts",
     "license": "MIT",
     "keywords": [
@@ -14,7 +14,7 @@
         "watch": "tsc --w -noEmit",
         "watch-build": "tsc --w",
         "build": "tsc",
-        "prepublishOnly": "build"
+        "prepublishOnly": "yarn build"
     },
     "homepage": "https://flareapp.io",
     "repository": {

@@ -1,6 +1,6 @@
-import {deflateRawSync} from "zlib";
-import axios from "axios";
-import {Sourcemap} from "./index";
+import { deflateRawSync } from 'zlib';
+import axios from 'axios';
+import { Sourcemap } from './index';
 
 export default class FlareApi {
     endpoint: string;
@@ -28,6 +28,6 @@ export default class FlareApi {
                 .catch((error) => {
                     return reject(`${error.response.status}: ${error.response.data}`);
                 });
-        })
+        });
     }
 }

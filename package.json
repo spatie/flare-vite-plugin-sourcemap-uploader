@@ -14,7 +14,8 @@
         "watch": "tsc --w -noEmit",
         "watch-build": "tsc --w",
         "build": "tsc",
-        "prepublishOnly": "yarn build"
+        "prepublishOnly": "yarn build",
+        "format": "prettier --write 'src/*.ts'"
     },
     "homepage": "https://flareapp.io",
     "repository": {
@@ -26,6 +27,7 @@
     },
     "devDependencies": {
         "@types/node": "^18.0.1",
+        "prettier": "2.7.1",
         "typescript": "^4.7.4",
         "vite": "^2.7"
     },

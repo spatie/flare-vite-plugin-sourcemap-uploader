@@ -1,10 +1,10 @@
-import {resolve} from 'path';
-import {existsSync, readFileSync, unlinkSync} from 'fs';
+import { resolve } from 'path';
+import { existsSync, readFileSync, unlinkSync } from 'fs';
 import glob from 'fast-glob';
-import {Plugin, ResolvedConfig, UserConfig} from "vite";
-import {OutputOptions} from "rollup";
-import {uuid} from "./util";
-import FlareApi from "./flareApi";
+import { Plugin, ResolvedConfig, UserConfig } from 'vite';
+import { OutputOptions } from 'rollup';
+import { uuid } from './util';
+import FlareApi from './flareApi';
 
 export type PluginConfig = {
     key: string;
@@ -18,7 +18,7 @@ export type PluginConfig = {
 export type Sourcemap = {
     original_file: string;
     content: string;
-    sourcemap_url: string,
+    sourcemap_url: string;
 };
 
 export default function FlareSourcemapUploader({
@@ -35,17 +35,14 @@ export default function FlareSourcemapUploader({
 
     const flare = new FlareApi(apiEndpoint, key, version);
 
-    const enableUploadingSourcemaps = key &&
-        (process.env.NODE_ENV !== 'development' || runInDevelopment) &&
-        process.env.SKIP_SOURCEMAPS !== 'true';
+    const enableUploadingSourcemaps =
+        key && (process.env.NODE_ENV !== 'development' || runInDevelopment) && process.env.SKIP_SOURCEMAPS !== 'true';
 
     return {
         name: 'flare-vite-plugin',
         apply: 'build',
 
-        config({build}: UserConfig, {mode}: { mode: string }) {
-            const enableSourcemaps = enableUploadingSourcemaps && mode !== 'development';
-
+        config({ build }: UserConfig, { mode }: { mode: string }) {
             return {
                 // Set FLARE_SOURCEMAP_VERSION and API key so the Flare JS client can read it
                 define: {
@@ -53,9 +50,12 @@ export default function FlareSourcemapUploader({
                     FLARE_JS_KEY: `'${key}'`,
                 },
                 build: {
-                    sourcemap: build?.sourcemap !== undefined
-                        ? build.sourcemap
-                        : (enableSourcemaps ? 'hidden' : false),
+                    sourcemap: (() => {
+                        if (build?.sourcemap !== undefined) return build.sourcemap;
+                        const enableSourcemaps = enableUploadingSourcemaps && mode !== 'development';
+                        if (enableSourcemaps) return 'hidden';
+                        return false;
+                    })(),
                 },
             };
         },
@@ -72,29 +72,31 @@ export default function FlareSourcemapUploader({
 
             const outputDir = outputConfig.dir || '';
 
-            const files = await glob('./**/*.map', {cwd: outputDir});
-            const sourcemaps = files.map((file): Sourcemap | null => {
-                const sourcePath = file.replace(/\.map$/, '');
-                const sourceFilename = resolve(outputDir, sourcePath);
+            const files = await glob('./**/*.map', { cwd: outputDir });
+            const sourcemaps = files
+                .map((file): Sourcemap | null => {
+                    const sourcePath = file.replace(/\.map$/, '');
+                    const sourceFilename = resolve(outputDir, sourcePath);
 
-                if (!existsSync(sourceFilename)) {
-                    flareLog(`no corresponding source found for "${file}"`, true);
-                    return null;
-                }
+                    if (!existsSync(sourceFilename)) {
+                        flareLog(`no corresponding source found for "${file}"`, true);
+                        return null;
+                    }
 
-                const sourcemapLocation = resolve(outputDir, file);
+                    const sourcemapLocation = resolve(outputDir, file);
 
-                try {
-                    return {
-                        content: readFileSync(sourcemapLocation, 'utf8'),
-                        sourcemap_url: sourcemapLocation,
-                        original_file: `${base}${sourcePath}`,
-                    };
-                } catch (error) {
-                    flareLog('Error reading sourcemap file ' + sourcemapLocation + ': ' + error, true);
-                    return null;
-                }
-            }).filter(sourcemap => sourcemap !== null) as Sourcemap[];
+                    try {
+                        return {
+                            content: readFileSync(sourcemapLocation, 'utf8'),
+                            sourcemap_url: sourcemapLocation,
+                            original_file: `${base}${sourcePath}`,
+                        };
+                    } catch (error) {
+                        flareLog('Error reading sourcemap file ' + sourcemapLocation + ': ' + error, true);
+                        return null;
+                    }
+                })
+                .filter((sourcemap) => sourcemap !== null) as Sourcemap[];
 
             if (!sourcemaps.length) {
                 return;

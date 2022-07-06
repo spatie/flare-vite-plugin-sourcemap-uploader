@@ -21,7 +21,7 @@ export type Sourcemap = {
     sourcemap_url: string;
 };
 
-export default function FlareSourcemapUploader({
+export default function flareSourcemapUploader({
     key,
     base,
     apiEndpoint = 'https://flareapp.io/api/sourcemaps',

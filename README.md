@@ -21,11 +21,11 @@ Next, add the plugin to your `vite.config.js` file:
 
 ```js
 import { defineConfig } from 'vite';
-import FlareSourcemapUploader from '@flareapp/vite-plugin-sourcemap-uploader';
+import flareSourcemapUploader from '@flareapp/vite-plugin-sourcemap-uploader';
 
 export default defineConfig({
     plugins: [
-        FlareSourcemapUploader({
+        flareSourcemapUploader({
             key: 'YOUR API KEY HERE'
         }),
     ],

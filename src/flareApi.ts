@@ -26,7 +26,7 @@ export default class FlareApi {
                 })
                 .then(resolve)
                 .catch((error) => {
-                    return reject(`${error.response.status}: ${error.response.data}`);
+                    return reject(`${error.response.status}: ${JSON.stringify(error.response.data)}`);
                 });
         });
     }

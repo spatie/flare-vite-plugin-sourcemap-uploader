@@ -21,7 +21,7 @@ Next, add the plugin to your `vite.config.js` file:
 
 ```js
 import { defineConfig } from 'vite';
-import FlareSourcemapUploader from './flare';
+import FlareSourcemapUploader from '@flareapp/vite-plugin-sourcemap-uploader';
 
 export default defineConfig({
     plugins: [

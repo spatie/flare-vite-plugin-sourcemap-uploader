@@ -9,10 +9,10 @@ import FlareApi from "./flareApi";
 export type PluginConfig = {
     key: string;
     base?: string;
-    apiEndpoint: string;
-    runInDevelopment: boolean;
-    version: string;
-    removeSourcemaps: boolean;
+    apiEndpoint?: string;
+    runInDevelopment?: boolean;
+    version?: string;
+    removeSourcemaps?: boolean;
 };
 
 export type Sourcemap = {

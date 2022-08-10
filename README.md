@@ -46,3 +46,21 @@ Run the `vite build` command to make sure the sourcemaps are generated. You shou
 - `runInDevelopment: boolean`: whether to upload sourcemaps when `NODE_ENV=development` or when running the dev server (defaults to `false`)
 - `version: string`: the sourcemap version (defaults to a fresh `uuid` per build)
 - `removeSourcemaps: boolean`: whether to remove the sourcemaps after uploading them (defaults to `false`). Comes in handy when you want to upload sourcemaps to Flare but don't want them published in your build.
+
+## development
+
+Publish a new release: 
+
+```bash
+npm version patch
+npm publish
+```
+
+Tag the release:
+
+<pre>
+git tag <var>VERSION</var>
+git push origin <var>VERSION</var>
+</pre>
+
+Replace <var>VERSION</var> with `v` + the version from `package.json` — for example, `v1.0.2` 

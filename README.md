@@ -13,9 +13,9 @@ Looking for the Flare client? [Go to the @flareapp/flare-client repo](https://ww
 Install the plugin using NPM or Yarn:
 
 ```bash
-yarn add --dev @flareapp/vite-plugin-sourcemap-uploader
+yarn add @flareapp/vite-plugin-sourcemap-uploader
 # or
-npm install --save-dev @flareapp/vite-plugin-sourcemap-uploader
+npm install @flareapp/vite-plugin-sourcemap-uploader
 ```
 Next, add the plugin to your `vite.config.js` file:
 
